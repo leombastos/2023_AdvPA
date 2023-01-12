@@ -39,13 +39,13 @@
 ### Files/Plots/Help
 
 # 2) R terminology ----
-# Object
-48/13
-
-a <- 48/13
+## Object
+45
+45/13
+a <- 45/13
 a
 
-b <- c(10, 15, 3)
+b <- c(10,15, 5)
 b
 
 c <- "precision ag"
@@ -54,47 +54,55 @@ c
 ## Object classes
 ### Data frame
 d <- data.frame(number = b,
-                id = c
-                )
+                id = c)
 
 d
 
 ### Matrices
-e <- matrix(c(b, b), ncol = 2)
-
+e <- matrix(c(b,b), 
+            ncol = 2 )
 e
 
 ### Lists 
-f <- list("number" = a,
-          "numbers" = b,
-          "word" = c,
-          "data" = d
-          )
+f <- list("number" = a, "numbers" = b,
+          "word" = c, "data" = d)
 
 f
 
+class(f)
+
+class(f$number)
+
+
 ## Function
+mean(b)
+
 mean(x = b)
- 
+
 ## Argument
 help("mean")
 
-b2 <- c(10, 15, 5, NA)
+b2 <- c(10,15,5,NA)
 
-mean(b2,
-     T
-     )
+mean(b2)
 
-mean(x = b2,
-     na.rm = T)
+mean(x = b2, 
+     na.rm = TRUE)
+
+mean(b2, 
+     TRUE)
+
+mean(TRUE,
+     b2)
+
+mean(na.rm = TRUE, 
+     x = b2)
 
 ## Package
 ## Install vs. load a package
-install.packages("tibble")
-
-library(tibble)
-
 ## Let's install package tibble, then load it
+install.packages("tibble")
+library(tibble)
 
 # 3) Creating a data set, exploring it ----
 intro <- tribble(~name, ~height, ~favcrop, 
@@ -103,19 +111,21 @@ intro <- tribble(~name, ~height, ~favcrop,
                  "Austin", 180, "peanuts",
                  "Anish", 178, "pecan",
                  "Umar", 193, "rice"
-                 )
-
-intro
+)
   
 # Check class, summary, and structure
 class(intro)
-
 summary(intro)
 
+head(intro, n = 2)
+tail(intro, n = 2)
+
+class(intro$favcrop)
 
 # Sampling the dataset
 # First row only
 intro[1 , ]
+
 
 # First column only
 intro[ , 1]
@@ -124,30 +134,31 @@ intro[ , 1]
 intro[1:3 , 1:3]
 
 # Rows 1 and 3 and columns 1 and 3
-intro[  c(1,3) , c(1,3) ]
+intro[c(1,3) , c(1,3)]
 
 # 4) ggplot2 philosophy and plots ---- 
-install.packages("ggplot2")
+
 library(ggplot2)
-
-x = names
-y = height
-
 # Point
-ggplot(data = intro, mapping = aes(x = name,
-                                   y = height
-                                   ))+
-  geom_point(aes(color = favcrop,
-                 shape = favcrop
-                 ), size = 3)+
-  scale_color_viridis_d()+
-  theme_bw()
-
-ggsave("~/Desktop/plot1.png")
+ggplot(data = intro, 
+       mapping = aes(y = height, 
+                     x = name, 
+                     color = favcrop))+
+  geom_point()
 
 # Customizing
+ggplot(data = intro, 
+       mapping = aes(y = height, 
+                     x = name, 
+                     color = favcrop,
+                     shape = favcrop))+
+  geom_point()+
+  scale_color_colorblind()+
+  theme_dark()
+
 
 # Exporting
+ggsave("~/Desktop/plot1.png")
 
 # 5) RStudio projects ----
 ## Create a folder on your Desktop named 2023_AdvPA-initials
