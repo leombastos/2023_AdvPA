@@ -134,17 +134,17 @@ identical(soyk_7, soyk_w)
 
 ```
 
-# 3) Quiz  
+# 3) Assignment   
 Starting from soyk, use data wrangling functions in a pipe workflow to generate the average k_pct for each K rate (in kg/ha) within each location (basically, averaging over reps). You can use the chunk below to complete this quiz.
 
-```{r quiz}
+```{r assignment}
 soyk 
 ```
 
 
 Tip: the final data frame will have 16 rows.
 
-Submit your result (copy the table from the chunk output, paste it in the email body) to me by email (lmbastos@uga.edu) by Jan 13th 11:59 pm.
+Submit your result (copy the table from the chunk output, paste it in the email body) to me by email (lmbastos@uga.edu) by Tuesday Jan 17th 11:59 pm.
 
 
 
