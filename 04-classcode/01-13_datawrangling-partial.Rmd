@@ -1,0 +1,150 @@
+---
+title: "01 Data wrangling"
+---
+
+# 1) Setup  
+
+```{r Setup, message=F}
+# Loading packages (every time you open R)
+library(readxl) # to read excel files
+library(janitor) # to clean data
+library(dplyr) # wrangling
+library(tidyr) # wrangling
+library(readr) # to export csv
+
+```
+
+
+```{r Reading data}
+soyk 
+
+# Checking first rows
+soyk
+
+# View
+
+```
+
+This study was conducted at four different locations in one year to assess the effect of potassium (K) fertilizer rates on soybean trifoliate K concentration at growth stage R4.  
+
+Each study was a randomized complete block design (RCBD) with K rate as the only treatment factor with levels 0, 50, 100, and 150 lbs K2O/ac.
+
+```{r Glimpse}
+
+```
+
+```{r Summary}
+
+```
+
+# 2) Data wrangling  
+```{r soyk_1 - clean_names()}
+soyk_1 
+
+soyk_1
+```
+
+
+```{r soyk_2 - filter()}
+names(soyk_1)
+
+soyk_2 
+
+soyk_2
+```
+
+```{r soyk_3 - mutate()}
+# Transforming K rate from lbs/ac to kg/ha
+soyk_3  
+
+soyk_3
+```
+
+```{r soyk_4 - case_when()}
+soyk_4 
+
+soyk_4
+
+```
+
+```{r soyk_5 - pivot_longer()}
+names(soyk_4)
+
+soyk_5 
+
+soyk_5
+
+View(soyk_5)
+```
+
+```{r soyk_6 - separate()}
+soyk_6 
+
+soyk_6
+
+View(soyk_6)
+```
+
+```{r soyk_7 - select()}
+names(soyk_6)
+
+soyk_7 
+
+soyk_7
+```
+
+```{r soyk_8 - arrange()}
+soyk_8 
+
+soyk_8
+```
+
+```{r soyk_9 and 10 - group_by and summarise}
+# group_by
+soyk_9 
+
+soyk_9
+
+class(soyk_8)
+
+class(soyk_9)
+
+# summarise
+soyk_10 
+
+soyk_10
+```
+
+```{r Piping it all together}
+soyk_w 
+
+soyk_w
+
+
+```
+
+```{r Checking if same as without pipe}
+# Same result?
+identical(soyk_7, soyk_w)
+
+```
+
+```{r Saving to file for further analysis}
+
+
+```
+
+# 3) Quiz  
+Starting from soyk, use data wrangling functions in a pipe workflow to generate the average k_pct for each K rate (in kg/ha) within each location (basically, averaging over reps). You can use the chunk below to complete this quiz.
+
+```{r quiz}
+soyk 
+```
+
+
+Tip: the final data frame will have 16 rows.
+
+Submit your result (copy the table from the chunk output, paste it in the email body) to me by email (lmbastos@uga.edu) by Jan 13th 11:59 pm.
+
+
+

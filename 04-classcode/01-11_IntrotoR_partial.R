@@ -40,110 +40,60 @@
 
 # 2) R terminology ----
 # Object
-48/13
+a 
 
-a <- 48/13
-a
+b 
 
-b <- c(10, 15, 3)
-b
-
-c <- "precision ag"
-c
+c 
 
 ## Object classes
 ### Data frame
-d <- data.frame(number = b,
-                id = c
-                )
+d 
 
 d
 
 ### Matrices
-e <- matrix(c(b, b), ncol = 2)
+e 
 
 e
 
 ### Lists 
-f <- list("number" = a,
-          "numbers" = b,
-          "word" = c,
-          "data" = d
-          )
+f 
 
 f
 
 ## Function
-mean(x = b)
- 
+
 ## Argument
-help("mean")
-
-b2 <- c(10, 15, 5, NA)
-
-mean(b2,
-     T
-     )
-
-mean(x = b2,
-     na.rm = T)
 
 ## Package
 ## Install vs. load a package
-install.packages("tibble")
-
-library(tibble)
 
 ## Let's install package tibble, then load it
 
 # 3) Creating a data set, exploring it ----
-intro <- tribble(~name, ~height, ~favcrop, 
-                 "Bo", 195, "cotton",
-                 "Sandesh", 181, "maize",
-                 "Austin", 180, "peanuts",
-                 "Anish", 178, "pecan",
-                 "Umar", 193, "rice"
-                 )
+intro 
 
 intro
   
 # Check class, summary, and structure
-class(intro)
-
-summary(intro)
 
 
 # Sampling the dataset
 # First row only
-intro[1 , ]
 
 # First column only
-intro[ , 1]
 
 # Rows 1 to 3 and columns 1 to 3
-intro[1:3 , 1:3]
 
 # Rows 1 and 3 and columns 1 and 3
-intro[  c(1,3) , c(1,3) ]
 
 # 4) ggplot2 philosophy and plots ---- 
 install.packages("ggplot2")
 library(ggplot2)
 
-x = names
-y = height
 
 # Point
-ggplot(data = intro, mapping = aes(x = name,
-                                   y = height
-                                   ))+
-  geom_point(aes(color = favcrop,
-                 shape = favcrop
-                 ), size = 3)+
-  scale_color_viridis_d()+
-  theme_bw()
-
-ggsave("~/Desktop/plot1.png")
 
 # Customizing
 
