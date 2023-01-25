@@ -39,4 +39,4 @@ vignettes/*.pdf
 .Renviron
 
 # /05-classcode_completed/
-/05-classcode_completed/01-13_datawrangling-complete.Rmd
+# /05-classcode_completed/
