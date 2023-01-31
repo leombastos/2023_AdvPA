@@ -1,0 +1,117 @@
+---
+title: "Mini-project instructions"
+subtitle: "COMMODITY CATEGORY"
+author: "YOUR FULL NAME"
+format:
+  html:
+    code-fold: true
+    embed-resources: true
+    toc: true
+    number-sections: true
+    theme: cerulean
+---
+
+# Instructions  
+This file contains both the **instructions** for the mini-project, and also the **questions**. You are required to use this file to produce code, output, and answers to the questions below.  
+
+Besides simply creating output, make sure to answer (with words) what the question is asking. You will need to create tables and/or plots to arrive at the answers, and then comment on what you found below it.  
+
+To get you set up:  
+
+  - Go to your course main folder  
+  - Create a folder called `03 mini project - Your Full Name`  
+  - Go inside the folder you just created, and create the sub-folders `data`, `code`, `output`  
+  - Move this script inside the `code` folder  
+  - After downloading the data (instructions below), rename it as `commodity_category.csv`, making sure to adapt the name to reflect your commodity and category.  
+  - Move this data into the `data` folder  
+  - Create an RStudio project at the main level of this folder structure  
+
+# Mini-project information  
+Fill in below the information regarding your mini-project as outlined in class:  
+
+- Name: 
+- Commodity:
+- Category:
+
+Update the file YAML (the first few lines of code fenced in between ---) by writing your full name on the `author:` line, and your commodity and category on the `subtitle:` line.  
+
+# USDA NASS data retrieval  
+Go on the [USDA NASS QuickStats portal](https://quickstats.nass.usda.gov) and make the appropriate selections to retrieve the data needed for your project.
+
+> Our goal is to download data related to your commodity and category for all counties in the state of Georgia for all available years.  
+
+Once you arrive at a final selection, **take a screen shot** of all selected variables in your query. Keep this screen shot (you will need it later).  
+
+
+# Setup  
+Here's where you will load your packages and load your data.  
+Follow a similar structure as we did in class.  
+
+# EDA  
+You may need to to some EDA to make sure you have the correct data (column names, variable classes, etc.).  
+Follow a similar structure as we did in class, both for the summary and spatial scripts.  
+
+# Wrangling  
+Based on your EDA, you may need to perform data wrangling operations to get your data ready to be used.  
+Follow a similar structure as we did in class, both for the summary and spatial scripts.    
+
+# Questions 
+Below each question, create chunk(s) to write code to find the answer.  
+Then, write a full sentence to answer the question.  
+
+## What were the minimum and maximum years reported on your data?  
+
+## What were the minimum and maximum values for your category at the county level (e.g., yield, production, area, etc.)? When (what year) and where (what county) did these min and max values occurred?  
+
+## Plot your category values as a density plot. How does the distribution look like (skewed, normal)? Where does the distribution appear to peak related to your category value (look on the x-axis)?  
+
+## Plot your category values as a boxplot over years. Which year(s) seem to have the largest variability?  
+
+## Plot the overall-county average of your category values over time. Around what year (you can eyabll on the plot) was it maximum? And minimum? Is there a trend (increasing over time, decreasing over time, goes up and down without a trend, etc)?  
+
+## What was the highest category value in the most recent reported year?  
+
+## Plot your category values over time for the highest ranked county in the most recent reported year.  
+
+## What was the lowest category value in the most recent reported year?  
+
+## Plot your category values over time for the lowest ranked county in the most recent reported year.  
+
+## Plot category values over time for both of the counties above.  
+
+## Plot the state-wide summarized (e.g., summed if production, planted/harvested area, number of gins, and average if yield) category value on each year. Around what years was it highest? And lowest? 
+
+## Create a publication-ready static map with your category values for all counties in Georgia for the most recent reported year.  Make sure your axis and legend labels are professional and include units if needed. Add a title to your map. Add county names.  
+
+
+## Create an animated map with your category values for all counties in Georgia for all years. If historical data is available for more than 10 years into the past, filter to show only last 10 years of data.  
+
+## Create an interactive map with your category values for all counties in Georgia for the most recent reported year.  
+
+# Submitting your work  
+Once you have developed all the code and answers, make sure to Render this quarto file.
+
+After rendering, an .html file will be created on your `code` folder.
+
+Rename this file to `LASTNAME_COMMODITY_CATEGORY_miniproject.html`.
+
+For ex., `Bastos_soybeans_production_miniproject.html`.
+
+Send the html file to my email (lmbastos@uga.edu) by Feb 15th 11:59 pm.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
