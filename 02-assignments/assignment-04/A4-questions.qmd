@@ -1,0 +1,33 @@
+---
+title: "Assignment #4"
+author: "YOUR FULL NAME"
+format:
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+---
+
+After reading the paper **"2012 Sudduth et al. - Yield editor 2.0"**, answer the following questions:  
+
+# Why is it important to clean yield monitor data?  
+
+
+# What are the main sources of error on yield monitor data?  
+
+
+# How many filtering methods have been implemented in Yield Editor 2.0?  
+
+# Select three filters and describe them (no copy/pasting, paraphrase instead).  
+
+# What happened with yield mean, standard deviation, and coefficient of variation when comparing uncleaned vs. automated cleaning?  
+
+---
+
+After answering all questions, render this quarto file to html, include your initials on the file name (e.g., A4-questions-LMB.html) and send to **lmbastos@uga.edu** by **Monday, Feb 06 11:59 pm**.  
+
+
+
+
+
+
