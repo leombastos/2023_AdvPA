@@ -97,7 +97,7 @@ Rename this file to `LASTNAME_COMMODITY_CATEGORY_miniproject.html`.
 
 For ex., `Bastos_soybeans_production_miniproject.html`.
 
-Send the html file to my email (lmbastos@uga.edu) by Feb 15th 11:59 pm.  
+Send the html file to my email (lmbastos@uga.edu) by Feb 17th 11:59 pm.  
 
 
 

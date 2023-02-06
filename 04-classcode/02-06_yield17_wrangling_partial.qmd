@@ -1,0 +1,162 @@
+---
+title: "Yield monitor wrangling - 2017"
+author: "All of us"
+format:
+  html:
+    code-fold: false
+    embed-resources: true
+    toc: true
+    number-sections: true
+    theme: journal
+    #cerulean, journal, quartz, sketchy, slate, morph, superhero, vapor
+knitr: 
+  opts_chunk: 
+    message: false
+    warning: false
+---
+
+# Learning objectives  
+Today's learning objectives are:  
+
+- Talk about the role of yield monitor data in ag  
+- Import yield data  
+- Explore with tables, plots, and maps (EDA)  
+- Learn and implement data wrangling steps for geospatial data  
+
+# Setup  
+## Loading packages  
+```{r setup }
+#| message: false
+
+#loading packages (add to the list as we need) 
+library(readr)
+library(janitor)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(sf)
+library(viridis)
+library(mapview)
+
+```
+
+## Importing data  
+```{r yield17 }
+yield17 
+
+yield17 
+
+```
+
+# EDA  
+```{r summary}
+summary(yield17) 
+```
+
+What columns do you think are relevant?  
+
+```{r yield distribution - density plot}
+ggplot(yield17, aes(x=Dry_Yield))
+
+```
+
+```{r speed distribution - density plot}
+ggplot(yield17, aes(x=Speed))+
+  geom_density()+
+  geom_rug()
+
+```
+
+```{r yield map}
+
+
+```
+
+```{r yield restricted map}
+
+
+```
+
+```{r yield x speed}
+ggplot(yield17, aes(x=Speed, 
+                    y=Dry_Yield))
+
+```
+Do we need to clean this data?  
+From a yield map quality perspective, what steps would you do?  
+
+- Clean based on speed  
+- Clean based on yield  
+
+```{r data needs}
+yield17
+```
+
+From a data wrangling perspective, what steps would you do?  
+
+- standardize column naming style (for ease of use)  
+- select only needed columns:  
+
+  - Speed  
+  - Dry_Yield  
+  - POINT_X  
+  - POINT_Y  
+
+- rename columns to include measurement units  
+- create columns in metric system  
+- transform it into spatial object (as of now, it is only a data frame)  
+- transform from geographic (unprojected) to projected  
+
+# Wrangling  
+```{r yield17_w}
+yield17_w <- yield17 %>% 
+  # Cleaning names
+  clean_names() 
+  # Selecting desired variables and renaming some of them
+  
+  # Transforming from english to metric units
+  #mutate(yield_kgha=yield_lbac*0.453592/0.404686,
+  #       speed_kmh=speed_mph*1.60934)
+
+  # Transforming into sf object
+
+  # Setting native crs (geographic)
+
+  # Transforming from geodraphic to prjected CRS
+
+yield17_w
+
+```
+
+# Maps  
+```{r static}
+yield17_w %>%
+  filter(yield_lbac < 3000) %>%
+  ggplot()+
+  geom_sf(aes(color = yield_lbac), size = .1)+
+  scale_color_viridis_b()
+
+```
+
+```{r interactive}
+yield17_w %>%
+  filter(yield_lbac < 3000) 
+
+```
+
+# Quiz  
+Where in the field do you see low-yielding areas? Of these different low-yielding areas, which ones do you think can be related to yield monitoring errors? Why?  
+
+Tip: Toggle the yield layer on and off above, it may help you to answer.  
+
+You have 5 min. Send me your answer by email (lmbastos@uga.edu). This will also be your attendance.  
+
+
+
+# Exporting  
+```{r}
+
+
+```
+
+
