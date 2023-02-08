@@ -1,0 +1,361 @@
+---
+title: "Yield monitor editor - 2017"
+author: "All of us"
+format:
+  html:
+    code-fold: false
+    embed-resources: true
+    toc: true
+    number-sections: true
+    theme: sketchy
+    #cerulean, journal, quartz, sketchy, slate, morph, superhero, vapor
+knitr: 
+  opts_chunk: 
+    message: false
+    warning: false
+---
+
+# Learning objectives  
+Today’s learning objectives are:  
+
+- Learn and implement yield monitor data cleaning steps  
+- Compare numerically and graphically raw and cleaned yield monitor data
+
+# Setup  
+## Loading packages  
+```{r  }
+#| message: false
+
+# installing 
+#install.packages("leafsync")
+#install.packages("patchwork")
+
+#loading packages (add to the list as we need) 
+library(readr)
+library(janitor)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(sf)
+library(viridis)
+library(mapview)
+library(leafsync)
+library(patchwork)
+
+```
+
+## Importing data  
+```{r }
+yield17_w 
+
+yield17_w 
+```
+
+# EDA  
+## Summary  
+```{r }
+summary(yield17_w) 
+```
+
+## Raw map
+```{r}
+yieldmap_raw <- ggplot(yield17_w)
+
+yieldmap_raw
+```
+
+## Raw map interactive  
+```{r}
+#| warning: false
+
+yieldmap_raw_int <- yield17_w %>%
+  filter(yield_lbac < 3000) %>%
+  mapview(zcol = "yield_lbac",
+        col.regions = viridis(3),
+        alpha.regions = 1,
+        cex = .1
+        ...,
+        ...
+)
+
+yieldmap_raw_int
+```
+
+Today we are applying 5 filters:  
+
+- Min and max yield  
+- Min and max speed  
+- Position  
+
+# Yield editor - Min/max yield  
+## Raw yield distribution  
+
+```{r}
+ggplot(data = yield17_w, 
+       aes(x = yield_lbac))+
+  geom_density()+
+  geom_rug()
+```
+
+## Raw yield summary  
+```{r}
+
+```
+
+## Raw yield quantiles  
+```{r}
+lowq_yield 
+lowq_yield
+
+upq_yield 
+upq_yield
+
+iqr 
+iqr
+
+miny 
+miny
+
+maxy 
+maxy
+```
+
+## Min/max raw yield quantiles plot  
+```{r}
+ggplot()+
+  geom_density(data = yield17_w, 
+               aes(x = yield_lbac))
+
+```
+
+## Filtering min/max raw yield  
+```{r}
+yield17_w_yf 
+
+yield17_w_yf
+```
+
+Before filtering we had a total of 31,724 data rows.
+How many rows now after filtering?
+
+## Min/max yield cleaned summary  
+```{r}
+
+```
+All right, all done filtering based on yield min and max.
+Now let’s do the same for speed.
+
+# Yield editor - Min/max speed  
+## Raw speed distribution  
+```{r}
+ggplot(data = yield17_w, 
+       aes(x = speed_mph))+
+  geom_density()+
+  geom_rug()
+```
+
+## Raw speed summary  
+```{r}
+summary(yield17_w$speed_mph) 
+```
+
+## Raw speed quantiles  
+```{r}
+lowq_speed 
+lowq_speed
+
+upq_speed 
+upq_speed
+
+iqr <- upq_speed - lowq_speed
+iqr
+
+minv <- lowq_speed - (0.18*iqr)
+minv
+
+maxv <- upq_speed + (0.18*iqr)
+maxv
+```
+
+## Min/max raw speed quantiles plot  
+```{r}
+ggplot()+
+  geom_density(data = yield17_w, 
+               aes(x = speed_mph))+
+  geom_vline(xintercept = lowq_speed, 
+             color = "red", 
+             linetype = 2)+
+  geom_vline(xintercept = upq_speed, 
+             color = "blue", 
+             linetype = 2)+
+  geom_vline(xintercept = minv, 
+             color = "red", 
+             linetype =1)+
+  geom_vline(xintercept = maxv, 
+             color = "blue", 
+             linetype = 1)+
+  annotate(geom = "rect",
+           ymin = 0, 
+           ymax = Inf,
+           xmin = minv, 
+           xmax = maxv,
+           alpha = .6, 
+           fill = "green")
+
+```
+
+## Filtering min/max raw speed  
+```{r}
+yield17_w_sf 
+
+yield17_w_sf
+
+```
+
+## Min/max speed cleaned summary  
+```{r}
+
+```
+
+# Yield editor - Position  
+Original position filter was based on quantiles too.
+Why filter based on boundary?  
+
+## Field boundary  
+```{r}
+boundary 
+
+boundary
+```
+
+```{r}
+boundary_w 
+  
+boundary_w
+```
+
+## Field boundary plot  
+```{r}
+yieldmap_raw
+```
+
+Let’s create a negative buffer of 20 m.  
+
+## Buffer  
+```{r}
+buffer 
+
+buffer
+```
+
+```{r}
+yieldmap_raw + 
+  geom_sf(data=boundary_w, 
+          fill = NA)
+```
+
+
+## Filtering position  
+```{r}
+yield17_w_pf 
+
+yield17_w_pf
+```
+
+## Position yield cleaned summary  
+```{r}
+summary(yield17_w_pf$yield_lbac)
+```
+
+# Raw vs Cleaned data  
+## Summary statistics  
+### Raw yield summary  
+```{r}
+summary_raw 
+
+summary_raw
+```
+
+### Clean yield summary  
+```{r}
+summary_filtered <- ... %>%
+  summarise(n = length(yield_lbac),
+            min = min(yield_lbac),
+            mean = mean(yield_lbac),
+            max = max(yield_lbac),
+            sd = sd(yield_lbac),
+            cv = (sd/mean)*100
+            ) %>%
+  mutate(data = "clean") %>%
+  dplyr::select(data, everything())
+
+summary_filtered
+```
+
+### Combined yield summary  
+```{r}
+summary_raw %>%
+  bind_rows(summary_filtered)
+```
+
+## Density plot  
+```{r}
+ggplot()+
+  geom_density(data = yield17_w, 
+               aes(x = yield_lbac), 
+               fill = "blue", 
+               alpha = .5)
+```
+
+# Maps  
+## Raw yield map  
+```{r}
+yieldmap_raw
+```
+
+## Clean yield map  
+```{r}
+yieldmap_clean <- ggplot(yield17_w_pf)+
+  geom_sf(aes(color = yield_lbac), 
+          size = .1)+
+  scale_color_viridis_b()
+
+yieldmap_clean
+```
+
+## Clean yield map interactive  
+```{r}
+yieldmap_clean_int <- yield17_w_pf %>%
+  mapview(zcol = "yield_lbac",
+        col.regions = viridis(3),
+        alpha.regions = 1,
+        cex = .1,
+        lwd = 0,
+        map.types = "Esri.WorldImagery"
+)
+
+yieldmap_clean_int
+```
+
+## Side-by-side raw vs. cleaned yield map  
+```{r}
+yieldmap_raw + yieldmap_clean
+```
+
+## Side-by-side raw vs. cleaned yield map interactive  
+```{r}
+
+```
+
+# Exporting cleaned version  
+```{r}
+
+
+```
+
+# Summary  
+Today we:  
+
+- Learned about and implemented 5 yield filters (yield, speed, position)  
+- Compared raw and cleaned yield monitor data
+
