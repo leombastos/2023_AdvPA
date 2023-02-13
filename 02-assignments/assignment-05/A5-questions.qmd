@@ -1,0 +1,42 @@
+---
+title: "Assignment #5"
+author: "YOUR FULL NAME"
+format:
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+---
+
+In class, we wrangled and cleaned yield monitor data from a field in 2017.  
+
+Now, you are asked to perform the same wrangling and cleaning steps on yield monitor data from the same field but collected in 2019 and 2020.  
+
+These data sets need to be downloaded from the course GitHub page. They are located in the `03-data` as csv files (`yield19.csv` and `yield20.csv`). Copy them from the downloaded GitHub folder and paste into your `data` folder of project `04 yield monitor`.  
+
+As part of the assignment, you will need to:  
+- Wrangle and clean each of the two data sets  
+- Provide me with a statistical summary of the cleaned version (including min, mean, max, sd, cv) to be included in the answers portion of this document (below).    
+- Export the cleaned version to file (save it to the `data` folder of your `04 yield monitor` project).    
+
+Some tips:  
+- You can duplicate the wrangling and editing scripts we developed in class, renaming each of the copies to something like `yield19_wrangling.qmd` and `yield19_editor.qmd` for the 2019 data as an example. You can do the same for the 2020 data too.      
+
+- Use these copied scripts as a template to adapt for each of the new data sets.  
+
+- The Dry_Yield and Speed columns are not named the same in these two new data sets, you will need to accommodate this in your code.  
+
+- Deadline is Tuesday Feb 14th 11:59 pm (we will use all 3 cleaned yield data on our next class period). 
+
+## Questions  
+
+1. What is the min, mean, max, and cv for the **cleaned** yield data from 2019?  
+
+
+
+2. What is the min, mean, max, and cv for the **cleaned** yield data from 2020?
+ 
+
+---
+
+After answering all questions, include your initials on the file name (e.g., A5-questions-LMB.md) and send to **lmbastos@uga.edu** by **Tuesday, Feb 14th 11:59 pm**.  
