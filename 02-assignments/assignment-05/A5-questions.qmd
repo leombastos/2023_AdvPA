@@ -8,6 +8,7 @@ format:
     embed-resources: true
 ---
 
+# Assignment details  
 In class, we wrangled and cleaned yield monitor data from a field in 2017.  
 
 Now, you are asked to perform the same wrangling and cleaning steps on yield monitor data from the same field but collected in 2019 and 2020.  
@@ -28,15 +29,15 @@ Some tips:
 
 - Deadline is Tuesday Feb 14th 11:59 pm (we will use all 3 cleaned yield data on our next class period). 
 
-## Questions  
+# Questions  
 
-1. What is the min, mean, max, and cv for the **cleaned** yield data from 2019?  
+## 1. What is the min, mean, max, and cv for the **cleaned** yield data from 2019?  
 
 
 
-2. What is the min, mean, max, and cv for the **cleaned** yield data from 2020?
+## 2. What is the min, mean, max, and cv for the **cleaned** yield data from 2020?
  
 
 ---
 
-After answering all questions, include your initials on the file name (e.g., A5-questions-LMB.md) and send to **lmbastos@uga.edu** by **Tuesday, Feb 14th 11:59 pm**.  
+After answering all questions, include your initials on the file name (e.g., A5-questions-LMB.qmd), render it, and send me the .html to **lmbastos@uga.edu** by **Tuesday, Feb 14th 11:59 pm**.  

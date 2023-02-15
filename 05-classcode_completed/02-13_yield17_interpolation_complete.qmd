@@ -1,0 +1,192 @@
+---
+title: "Interpolation"
+format: html
+---
+
+# Learning Objectives  
+Today, our learning objectives are:  
+- To learn about why is interpolation needed and useful  
+- Explore one type of interpolation analysis (inverse distance weighted - IDW)  
+- Perform IDW on the yield data sets  
+- Extract interpolated yield data based on a grid and save to file  
+
+
+# Setup  
+```{r setup}
+#| message: false
+#| warning: false
+
+
+#install.packages("gstat")
+#install.packages("stars")
+#install.packages("cubelyr")
+
+# Packages
+library(dplyr)
+library(tidyr)
+library(sf)
+library(ggplot2)
+library(viridis)
+library(gstat)
+library(raster)
+library(stars)
+
+```
+
+```{r reading yield data}
+yield17_c <- read_sf("../data/yield17_clean.geojson")
+
+yield17_c
+```
+
+```{r summary}
+summary(yield17_c)
+```
+
+
+```{r boundary, echo=F}
+boundary_w <- read_sf("../data/boundary.geojson") %>%
+  st_transform(crs = 6345)
+
+boundary_w
+```
+
+# Interpolation  
+Why do we need to interpolate?  
+
+```{r yield clean map}
+yieldclean_map <- ggplot()+
+  geom_sf(data = yield17_c,
+          aes(color=yield_lbac), size=.1)+
+  scale_color_viridis()+
+  geom_sf(data = boundary_w,
+          fill=NA,
+          color="blue")
+
+yieldclean_map
+```
+
+Interpolation methods:  
+  - deterministic: ex. **inverse distance weight (IDW)**  
+  - statistical: ex. kriging  
+  - [see bookdown](http://132.72.155.230:3838/r/spatial-interpolation-of-point-data.html)  
+  
+For simplicity sake, we are going to use IDW for this exercise.  
+
+## Grid
+```{r grid_v}
+# grid in vector format
+grid_v <- st_make_grid(boundary_w, 
+                     cellsize = 10) 
+
+grid_v
+
+class(grid_v)
+```
+
+```{r grid vector plot}
+yieldclean_map+
+  geom_sf(data = grid_v, 
+          alpha=.5,
+          fill=NA,
+          size=.1)
+```
+
+One issue here is that interpolation methods in R do not accept grids in vector format, only in **raster** format.  
+
+Let's rasterize our vector grid.  
+
+```{r grid_r}
+# grid in raster format 
+grid_r <- grid_v %>%
+  st_as_sf() %>%
+  st_rasterize(dx=10, dy=10) %>%
+  st_crop(boundary_w)
+
+grid_r
+
+class(grid_r)
+```
+
+```{r grid_r plot}
+yieldclean_map+
+  geom_stars(data = grid_r, 
+          alpha=.7)
+```
+
+## IDW  
+Let's set up the IDW algorithm by providing a formula. Here, we are just setting up the model.    
+```{r idw_mod}
+idw_mod <- gstat(formula = yield_lbac ~ 1,  
+                 data = yield17_c)
+
+idw_mod
+
+class(idw_mod)
+```
+
+Now, we need to actually predict our IDW model on our raster grid (this is where the interpolation really happens).  
+```{r idw_pred}
+idw_pred <- predict(idw_mod, grid_r)
+
+idw_pred
+
+class(idw_pred)
+```
+
+```{r idw_pred plot}
+ggplot()+
+  geom_stars(data = idw_pred)+
+  scale_fill_viridis()+
+  geom_sf(data = boundary_w,
+          fill=NA)+
+  geom_sf(data = grid_v, 
+          alpha=.5,
+          fill=NA,
+          size=.1)
+
+```
+
+# Grid extraction  
+In this step, the goal is to extract the interpolated yield value from the raster and basically transform it from cell (raster) to a polygon (vector).  
+
+```{r idw_pred_v}
+idw_pred_v <- idw_pred %>%
+  st_as_sf(as_points = F, 
+           merge = F) %>%
+  dplyr::select(ipyield_lbac=var1.pred)
+
+idw_pred_v
+
+class(idw_pred_v)
+```
+
+```{r idw_pred_v plot}
+ggplot()+
+  geom_sf(data = idw_pred_v,
+          aes(fill=ipyield_lbac),
+          color = NA)+
+  scale_fill_viridis()
+
+```
+
+```{r interpolated distribution}
+idw_pred_v %>%
+  ggplot(aes(x=ipyield_lbac))+
+  geom_density()+
+ geom_density(data = yield17_c,
+               aes(x = yield_lbac),
+               color = "blue"
+               )
+```
+
+# Exporting to file  
+
+Since we will use this product in a future class (to look into yield stability and create management zones), let's export it to file.  
+
+```{r exporting}
+write_sf(idw_pred_v,
+         "../data/yield17_interpolated.geojson",
+         delete_dsn = T
+         )
+```
