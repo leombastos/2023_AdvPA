@@ -1,0 +1,61 @@
+---
+title: "Quiz #4"
+author: "YOUR FULL NAME"
+format:
+  html:
+    embed-resources: true
+    toc: true
+---
+
+```{r}
+#| echo: false
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(sf)
+library(knitr)
+
+yield <- read_csv("../data/yield17.csv")
+
+```
+
+Below is the first 5 rows our raw yield data for 2017 used in class:   
+```{r}
+#| echo: false
+
+yield %>%
+  head() %>%
+  kable()
+```
+
+## 1. Is this file geospatial? How do you know?  
+
+## 2. What function would you use to transform it into an sf object?  
+
+## 3. Once we transform it into sf, is it vector or raster?  
+
+## 4. Answer below what type of geospatial file (vector or raster) each of these options would be:  
+- Field boundary:    
+- Grided soil samples:    
+- UAV imagery:    
+- County boundaries:  
+- Smartphone picture:  
+- Satellite imagery:  
+
+## 5. If we wanted to apply speed and yield filters on the data above, which column names would we need to use for that?  
+
+## 6. What is the EPSG value for WGS84? What unit is it in?  
+
+## 7. What is the EPSG value for NAD83 UTM zone 16N? What unit is it in?
+
+## 8. Which of the two types of CRS above do we need if we are performing distance-based operations (like buffering and interpolation). Why?  
+
+## 9. Write below the code we would need for plotting the yield dataset above, assuming it was an sf object and that we wanted to color the points according to the column `yield_lbac`. 
+
+## 10. I share a dataset named `yield.csv` with you and ask for you to create an RStudio project with the appropriate folders and subfolders. Assuming the project folder would be on your desktop, explain which folders and subfolders you would create, their names, where you would move the dataset into, and then inside which folder you would create the RStudio project.  
+
+---
+
+Add your name on the top of the script on the YAML (author line), add initials to the file name, render it, and send it to `lmbastos@uga.edu`.
+
