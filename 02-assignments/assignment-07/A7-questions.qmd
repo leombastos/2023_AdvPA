@@ -1,0 +1,38 @@
+---
+title: "Assignment #7"
+author: "YOUR FULL NAME"
+format:
+  html:
+    toc: true
+    number-sections: true
+    embed-resources: true
+---
+
+After reading the paper **"2007 Cox & Gerard - Soil Management Zone Determination by Yield Stability Analysis and Classification"**, answer the following questions:  
+
+# Which crop was studied on this paper?  
+
+# Which standardization method was used (numerical based on a sample statistic OR categorical based on quantiles)?  
+
+# Which sample statistic was used for the standardization? Is that the same as the one we used in class?  
+
+# How was temporal stability determined? Which metric was used for it?  
+
+# Write down the rules used to categorize data points into one of the 4 classes of inconsistent (or unstable), consistently high yield, consistently average yield, and consistently low yield?  
+
+# What percentage of all yield cells were classified as inconsistent (or unstable), consistently high yield, consistently average yield, and consistently low yield for the South Field?
+
+# What percentage of all yield cells were classified as inconsistent (or unstable), consistently high yield, consistently average yield, and consistently low yield for the North Field?
+
+# What percentage of all yield cells were classified as inconsistent (or unstable), consistently high yield, consistently average yield, and consistently low yield for the East Field?
+
+
+---
+
+After answering all questions, render this quarto file to html, include your initials on the file name (e.g., A4-questions-LMB.html) and send to **lmbastos@uga.edu** by **Tuesday, Feb 21 11:59 pm**.  
+
+
+
+
+
+
