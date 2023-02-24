@@ -1,0 +1,306 @@
+---
+title: "Terrain properties"
+author: "All of us"
+format:
+  html:
+    code-fold: false
+    embed-resources: true
+    toc: true
+    number-sections: true
+    theme: journal
+    #cerulean, journal, quartz, sketchy, slate, morph, superhero, vapor
+knitr: 
+  opts_chunk: 
+    message: false
+    warning: false
+---
+
+# Learning Objectives  
+Today, our objectives are to:  
+
+- Import point vector layer of elevation  
+- Interpolate elevation data  
+- Compute secondary terrain variables such as slope, aspect, and flow direction  
+- Export all soil terrain layers to file  
+
+# Setup  
+```{r setup}
+
+# Packages
+library(dplyr)
+library(tidyr)
+library(janitor)
+library(readr)
+library(sf) #vector manipulation
+library(ggplot2)
+library(viridis)
+library(ggthemes)
+library(gstat) #IDW
+library(stars) #raster manipulation
+library(terra) #topographical variables
+library(patchwork) #combining multiple plots  
+library(tibble) #rownames to column
+
+```
+
+```{r defining map theme}
+mytheme_map <- 
+  theme_map()+
+  theme(legend.position = "right",
+        panel.background = element_rect(fill = "gray80",
+                                        color = NA),
+        plot.background = element_rect(fill = "gray80",
+                                       color = NA),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12))
+
+```
+
+```{r reading elevation data}
+elev 
+
+elev
+```
+
+Notice how  we used `read_csv` to import the elevation data set.  
+As such, as of now R does not know this is a spatial object or with what CRS it was collected.  
+
+Thus, let's do some wrangling to address that and other aspects.  
+
+# Wrangling  
+```{r elev_w}
+elev_w 
+
+elev_w
+
+summary(elev_w)
+```
+
+# EDA  
+```{r elev_w map}
+elev_w %>%
+  ggplot()+
+  geom_sf(aes(color = elev_m), size =.01)+
+  scale_color_viridis_c(option = "E")
+  #...
+
+```
+Wait, wasn't this a point vector data? 
+How come it looks like polygons?  
+
+# Grid  
+Since we are interpolating, we need to create a grid (same as for the yield exercise) based on the field boundary.    
+
+```{r boundary_w}
+boundary_w 
+
+boundary_w
+```
+
+```{r grid_r}
+# grid in raster format
+grid_r 
+
+grid_r
+
+ggplot()
+
+```
+
+# Interpolation  
+```{r idw_mod}
+idw_mod 
+
+idw_mod
+```
+
+```{r idw_pred}
+idw_pred 
+
+idw_pred
+```
+
+```{r elev_map }
+elev_map <- ggplot() 
+
+elev_map
+```
+Where are highest points? And lowest? Which way do you think water moves?  
+
+# Computing secondary variables  
+## Slope  
+```{r slope}
+slope <- idw_pred %>%
+  dplyr::select(elev_m = var1.pred) 
+  # Transforming to SpatRast for slope computation  
+
+    # Transforming back into stars (so works with ggplot)
+
+  # Transforming to pct
+
+
+slope
+```
+
+
+```{r slope map}
+slope_map <- ggplot()+
+  geom_...(data = slope)+
+  geom_sf(data = boundary_w, 
+          fill = NA)+
+  scale_fill_viridis_b(option = "E")+
+  labs(fill = "Slope\n(%)")+
+  mytheme_map
+
+slope_map
+```
+
+## Aspect  
+```{r aspect}
+aspect <- idw_pred %>%
+  dplyr::select(elev_m = var1.pred) %>%
+  terra::rast() %>%
+  ...
+  st_as_stars() %>%
+  st_set_crs(value =  6345)
+
+aspect
+```
+
+
+```{r aspect map}
+aspect_map <- ggplot()+
+  geom_...(data = aspect)+
+  geom_sf(data = boundary_w, 
+          fill = NA)+
+  scale_fill_viridis_b(option = "E",
+                       breaks = c(22.5,
+                                  67.5,
+                                  112.5,
+                                  157.5,
+                                  202.5,
+                                  247.5,
+                                  292.5,
+                                  337.5))+
+  labs(fill="Aspect\n(degrees)")+
+  mytheme_map
+
+aspect_map
+```
+
+## Flow direction  
+```{r flowdir}
+flowdir <- idw_pred %>%
+  dplyr::select(elev_m = var1.pred) %>%
+  terra::rast() %>%
+  ...
+  st_as_stars() %>%
+  st_set_crs(value =  6345)
+
+flowdir
+```
+
+
+```{r flowdir map}
+flowdir_map <- ggplot()+
+  geom_...(data = flowdir)+
+  geom_sf(data = boundary_w, 
+          fill = NA)+
+  scale_fill_viridis_b(option = "E",
+                       breaks = c(1,2,
+                                  4,8,
+                                  16,32,
+                                  64,128))+
+  labs(fill="Flow dir.")+
+  mytheme_map
+
+flowdir_map
+```
+
+```{r flowdir map 2}
+ggplot()
+
+```
+## Quiz 
+### Based on the map above, which of the panels (1 through 128) appears to have the most data points?
+
+### Whatever was your answer above, translate that number into a cardinal direction (N, NE, E, SE, S,SW, W, NW). Which cardinal direction is related to the the number you answered above? In other words, in which direction is water moving on this field for most of the pixels?  
+
+Tip: look into the documentation for function terrain using `help("terrain")`, make sure is the one from package `terra`. You will find your answer there.
+
+Send me your answer by email (lmbastos@uga.edu), this will be your attendance.  
+
+## Plotting all together
+```{r plotting all together}
+elev_map + slope_map + aspect_map + flowdir_map 
+
+ggsave("../output/terrain.png", 
+       width = 10, 
+       height = 6)
+```
+
+
+# Grid extraction  
+```{r elev_v}
+elev_v 
+
+elev_v
+```
+How many rows? What we expected?  
+
+```{r slope_v}
+slope_v 
+
+slope_v
+```
+How many rows? Why is that?  
+
+```{r aspect_v}
+aspect_v <- ... %>%
+  st_as_sf(as_points = F, 
+           merge = F) %>%
+  dplyr::select(aspect = values) 
+
+aspect_v
+```
+```{r flowdir_v}
+flowdir_v <- ... %>%
+  st_as_sf(as_points = F, 
+           merge = F) %>%
+  dplyr::select(flowdir = values) 
+
+flowdir_v
+```
+
+# Joining all topo variables in one object  
+
+```{r terrain_v }
+terrain_v 
+
+terrain_v %>%
+  summary()
+```
+
+# Exporting  
+Exporting to file to use later for management zone creation.  
+```{r exporting}
+
+
+```
+
+# Summary  
+Today we have:  
+
+- Imported point vector elevation data  
+- Interpolated elevation to same grid as used for yield (keeping them all on same spatial extent and resolution)  
+- Computed secondary terrain variables (slope, aspect, flow direction)  
+- Transformed them into vector, joined all in one object, and exported to file  
+
+# What's next?  
+Next we will process the last piece of information: electrical conductivity (ec) data.  
+
+After being done with ec, we will be ready to create and validate management zones!  
+
+
+
+
