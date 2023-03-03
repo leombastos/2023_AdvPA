@@ -1,0 +1,195 @@
+---
+title: "Soil ECa"
+author: "All of us"
+format:
+  html:
+    code-fold: false
+    embed-resources: true
+    toc: true
+    number-sections: true
+    theme: journal
+    #cerulean, journal, quartz, sketchy, slate, morph, superhero, vapor
+knitr: 
+  opts_chunk: 
+    message: false
+    warning: false
+---
+
+# Learning Objectives  
+
+Today, our objectives are to:  
+
+- Import soil ECa data  
+- Interpolate soil ECa point data for two depths   
+- Export soil ECa layers to file  
+
+# Setup  
+```{r setup }
+# Packages
+library(dplyr)
+library(tidyr)
+library(janitor)
+library(readr)
+library(sf) #vector manipulation
+library(ggplot2)
+library(viridis)
+library(ggthemes)
+library(gstat) #IDW
+library(stars) #raster manipulation
+library(terra) #topographical variables
+library(patchwork) #combining multiple plots  
+library(tibble) #rownames to column
+
+```
+
+```{r defining map theme}
+mytheme_map <- 
+  theme_map()+
+  theme(legend.position = "right",
+        panel.background = element_rect(fill="gray80",
+                                        color=NA),
+        plot.background = element_rect(fill="gray80",
+                                       color=NA),
+        legend.title = element_text(size=14),
+        legend.text = element_text(size=12))
+
+```
+
+```{r reading elevation data}
+eca 
+
+eca
+```
+# Wrangling  
+```{r eca_w}
+eca_w 
+
+eca_w 
+```
+
+# EDA  
+```{r eca30 plot}
+eca_w 
+```
+
+
+```{r eca90 plot}
+eca_w 
+
+```
+
+# Grid  
+Since we are interpolating, we need to create a grid (same as for the yield and terrain exercises) based on the field boundary.    
+
+```{r boundary_w}
+boundary_w 
+
+boundary_w
+```
+
+```{r grid_r}
+# grid in vector format
+grid_r 
+
+grid_r
+
+ggplot()+
+  geom_stars(data = grid_r)+
+  mytheme_map
+
+```
+
+# Interpolation
+## eca30  
+```{r eca30_idw_mod}
+eca30_idw_mod 
+
+eca30_idw_mod
+```
+
+```{r eca30_idw_pred}
+eca30_idw_pred  
+
+eca30_idw_pred
+```
+
+```{r eca30_map }
+eca30_map 
+
+eca30_map
+```
+
+## eca90  
+```{r eca90_idw_mod}
+eca90_idw_mod 
+
+eca90_idw_mod
+```
+
+```{r eca90_idw_pred}
+eca90_idw_pred  
+
+eca90_idw_pred
+```
+
+```{r eca90_map }
+eca90_map <- ggplot()+
+  geom_stars(data = eca90_idw_pred)+
+  scale_fill_viridis_c()+
+  geom_sf(data=boundary_w, fill=NA)+
+  labs(fill="ECa\n0-90 cm\n(dS/m)")+
+  mytheme_map
+
+eca90_map
+```
+
+## Plotting all together
+```{r plotting all together}
+eca30_map + eca90_map
+
+ggsave("../output/soileca.png", 
+       width = 6, 
+       height = 3)
+```
+
+# Grid extraction  
+```{r eca30_v}
+eca30_v 
+```
+
+
+```{r eca90_v}
+eca90_v <- eca90_idw_pred %>%
+  st_as_sf(as_points = F, 
+           merge = F) %>%
+  dplyr::select(eca90_dsm=var1.pred) 
+
+eca90_v
+```
+
+# Merging eca layers  
+```{r eca_v }
+eca_v 
+
+eca_v
+```
+
+# Exporting  
+Exporting to file to use later for management zone creation.  
+```{r exporting}
+
+
+```
+
+# Summary  
+Today we have:  
+- Imported point vector soil ECa data  
+- Interpolated soil ECa at two different depths to same grid as used for yield (keeping them all on same spatial extent and resolution)  
+- Transformed them into vector, joined both depths in one object, and exported to file  
+
+# What's next?  
+Next we will be ready to create and validate management zones!
+
+For that, we will first load all layers created until now together.
+
+Then, we will check their relationships, run a tree algorithm to explore variable importance (more on that later), and finally use a clustering algorithm to create zones. 
